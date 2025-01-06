@@ -19,3 +19,6 @@ if __name__ == "__main__":
     details = asyncio.run(client.details())
     print(details)
 ```
+
+
+This project is not affiliated with Flashforge or any other companies, all rights reseved
