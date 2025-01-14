@@ -4,8 +4,6 @@ from typing import Optional, Mapping, Dict, Union
 import re
 
 import aiohttp
-from aiohttp import ClientResponse
-from aiohttp.web_response import Response
 
 from aioflashforge.exceptions import AddressNotValidException, SerialNotValidException, PrinterIdNotValidException, \
     PortNotValidException, GenericApiException
@@ -44,7 +42,7 @@ class FlashforgeClient:
 
         product_res = asyncio.run(self._request("product"))
         if product_res["code"] != 0:
-            raise GenericApiException(f"The request to the printer failed, got {product_res["message"]}")
+            raise GenericApiException(f"The request to the printer failed, got {product_res['message']}")
 
     async def details(self) -> RootDetailsRes:
         details_res = await self._request("detail")
@@ -54,7 +52,7 @@ class FlashforgeClient:
     async def _request(self,
                        path: str,
                        *, params: Optional[Mapping[str, str]] = None) -> Union[Dict[str, any], bytes]:
-        path = path if path.endswith('/') else path + '/'
+        path = path.removesuffix("/") if path.endswith('/') else path
         payload = {
             "serialNumber": self.serial_number,
             "checkCode": self.printer_id,
